@@ -1,0 +1,3 @@
+#! /bin/sh
+set -v
+include=`xcrun --sdk iphoneos --show-sdk-path`/usr/include python$EXE ../../Tools/scripts/h2py.py -i '(u_long)' `xcrun --sdk iphoneos --show-sdk-path`/usr/include/netinet/in.h

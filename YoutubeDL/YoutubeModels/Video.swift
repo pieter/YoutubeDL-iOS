@@ -7,3 +7,21 @@
 //
 
 import Foundation
+
+class Video : CustomStringConvertible {
+    var id: String
+    var title: String
+    
+    init(id: String, title: String) {
+        self.id = id
+        self.title = title
+    }
+    
+    class func fromJson(json: [String: AnyObject]) -> Video {
+        return Video(id: json["id"]! as! String, title: json["title"]! as! String)
+    }
+    
+    var description: String {
+        return "Video(title: \(title) id: \(id))"
+    }
+}

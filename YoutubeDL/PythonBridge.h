@@ -1,13 +1,11 @@
-//
-//  NSObject+PythonBridge.h
-//  YoutubeDL
-//
-//  Created by Pieter de Bie on 01/10/2016.
-//  Copyright © 2016 Pieter de Bie. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
-@interface NSObject (PythonBridge)
+// This module is not Thread-safe; You should make sure
+// to always call it from the same thread.
+// All these calls are blocking.
 
-@end
+// Call before calling any of the functions below
+void YDL_initialize();
+
+NSDictionary *YDL_playlistDataForUrl(NSURL *url);
+NSURL *YDL_downloadVideo(NSString *url);

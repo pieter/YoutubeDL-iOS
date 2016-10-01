@@ -1,21 +1,16 @@
-//
-//  MasterViewController.swift
-//  YoutubeDL
-//
-//  Created by Pieter de Bie on 01/10/2016.
-//  Copyright © 2016 Pieter de Bie. All rights reserved.
-//
-
 import UIKit
 
-class MasterViewController: UITableViewController {
+class PlaylistsViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
-    var objects = [Any]()
-
+    var detailViewController: PlaylistViewController? = nil
+    var objects = [Playlist]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        addListFromString(stringUrl: "https://www.youtube.com/playlist?list=PLBsP89CPrMeMKjHnLfO3WAhiOOxiv5Xqo")
+//        addListFromString(stringUrl: "https://www.youtube.com/watch?v=8GkqkqCini0&list=PLH-huzMEgGWDSuoidhR6uj3-sb_FAEt0A")
+        
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationItem.leftBarButtonItem = self.editButtonItem
 
@@ -23,7 +18,7 @@ class MasterViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = addButton
         if let split = self.splitViewController {
             let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? PlaylistViewController
         }
     }
 
@@ -37,10 +32,27 @@ class MasterViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func addListFromString(stringUrl: String) {
+        let playlist = Playlist(url: URL(string: stringUrl)!)
+        self.objects.append(playlist)
+        
+        DownloadManager.sharedDownloadManager.refreshPlaylist(playlist: playlist) {
+            self.tableView.reloadData()
+        }
+        self.tableView.reloadData()
+    }
+    
     func insertNewObject(_ sender: Any) {
-        objects.insert(NSDate(), at: 0)
-        let indexPath = IndexPath(row: 0, section: 0)
-        self.tableView.insertRows(at: [indexPath], with: .automatic)
+        let alert = UIAlertController(title: "Add Playlist", message: "Youtube playlist URL", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "https://www.youtube.com/playlist?list=PLBsP89CPrMeMKjHnLfO3WAhiOOxiv5Xqo"
+        }
+
+        alert.addAction(UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action) in
+            self.addListFromString(stringUrl: alert.textFields![0].text!)
+        })
+
+        self.present(alert, animated: true)
     }
 
     // MARK: - Segues
@@ -48,9 +60,9 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+                let object = objects[indexPath.row]
+                let controller = (segue.destination as! UINavigationController).topViewController as! PlaylistViewController
+                controller.objects = object.videos
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -70,8 +82,9 @@ class MasterViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
-        let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+        let playlist = objects[indexPath.row]
+        cell.textLabel!.text = playlist.title
+        cell.detailTextLabel!.text = "\(playlist.videos.count) videos"
         return cell
     }
 

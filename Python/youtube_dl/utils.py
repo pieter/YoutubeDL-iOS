@@ -1781,6 +1781,7 @@ def replace_extension(filename, ext, expected_real_ext=None):
 def check_executable(exe, args=[]):
     """ Checks if the given binary is installed somewhere in PATH, and returns its name.
     args can be a list of arguments for a short output (like -version) """
+    return False
     try:
         subprocess.Popen([exe] + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     except OSError:
@@ -1792,6 +1793,8 @@ def get_exe_version(exe, args=['--version'],
                     version_re=None, unrecognized='present'):
     """ Returns the version of the specified executable,
     or False if the executable is not present """
+    return False
+    
     try:
         out, _ = subprocess.Popen(
             [encodeArgument(exe)] + args,

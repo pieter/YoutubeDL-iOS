@@ -57,12 +57,17 @@ final class Video : NSObject, NSCoding {
     }
     
     func deleteFile() {
-        if hasBeenDownloaded() {
-            do {
-                try FileManager.default.removeItem(at: downloadLocation())
-            } catch let error as NSError {
-                print("Error deleting file: \(error)")
+        do {
+            if hasBeenDownloaded() {
+                    try FileManager.default.removeItem(at: downloadLocation())
+                    print("Checking \(partialDownloadLocation.path)")
             }
+            if FileManager.default.fileExists(atPath: partialDownloadLocation.path) {
+                print("Removing partial file \(partialDownloadLocation)")
+                try FileManager.default.removeItem(at: partialDownloadLocation)
+            }
+        } catch let error as NSError {
+            print("Error deleting file: \(error)")
         }
     }
     

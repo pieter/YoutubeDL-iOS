@@ -49,11 +49,12 @@ class PlaylistViewController: UITableViewController {
         
         // Assume we have partial, otherwise why would this have been called?
         let partialLocation = video.partialDownloadLocation
-        let linkLocation = partialLocation.appendingPathExtension(".mp4")
+        let linkLocation = partialLocation.appendingPathExtension("mp4")
         if !fileManager.fileExists(atPath: linkLocation.path) {
             do {
-                try fileManager.linkItem(at: partialLocation, to: linkLocation)
+                try fileManager.createSymbolicLink(at: linkLocation, withDestinationURL: partialLocation)
             } catch _ {
+                print("Error creating symbolic link for partial playback of \(video.id)")
                 // Whoops
             }
         }
@@ -102,6 +103,8 @@ class PlaylistViewController: UITableViewController {
             }
         } else if video.status == .Downloading {
             cell.detailTextLabel!.text = "Downloading \(Int((video.progress ?? 0) * 100))%"
+        } else if video.hasPartial() {
+            cell.detailTextLabel!.text = "\(video.time) -- Partially Downloaded. Tap to resume."
         } else {
             cell.detailTextLabel!.text = "\(video.time)"
         }

@@ -18,6 +18,23 @@ func prefPath() -> String {
 class DataStore {
     
     static let sharedStore = DataStore()
+    var playlists: [Playlist]
+    
+    init() {
+        playlists = []
+        playlists = loadFromDisk()
+    }
+    
+    func addPlaylist(url: URL) -> Playlist {
+        let playlist = Playlist(url: url)
+        playlists.append(playlist)
+        return playlist
+    }
+    
+    func remove(playlist: Playlist) {
+        playlists.remove(at: playlists.index(of: playlist)!)
+        saveToDisk()
+    }
     
     func loadFromDisk() -> [Playlist] {
         if let playlists = NSKeyedUnarchiver.unarchiveObject(withFile: prefPath()) as? [Playlist] {
@@ -27,7 +44,7 @@ class DataStore {
         }
     }
     
-    func saveToDisk(playlists: [Playlist]) {
+    func saveToDisk() {
         NSKeyedArchiver.archiveRootObject(playlists, toFile: prefPath())
     }
 }

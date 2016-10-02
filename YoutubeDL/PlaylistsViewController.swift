@@ -3,8 +3,11 @@ import UIKit
 class PlaylistsViewController: UITableViewController {
 
     var detailViewController: PlaylistViewController? = nil
-    var objects = DataStore.sharedStore.loadFromDisk()
 
+    var objects: [Playlist] {
+        return DataStore.sharedStore.playlists
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,12 +37,11 @@ class PlaylistsViewController: UITableViewController {
 
     func update() {
         tableView.reloadData()
-        DataStore.sharedStore.saveToDisk(playlists: objects)
+        DataStore.sharedStore.saveToDisk()
     }
     
     func addListFromString(stringUrl: String) {
-        let playlist = Playlist(url: URL(string: stringUrl)!)
-        objects.append(playlist)
+        let playlist = DataStore.sharedStore.addPlaylist(url: URL(string: stringUrl)!)
         
         DownloadManager.sharedDownloadManager.refreshPlaylist(playlist: playlist) {
             print("Updated playlist: \(playlist)")
@@ -110,9 +112,8 @@ class PlaylistsViewController: UITableViewController {
         if editingStyle == .delete {
             let playlist = objects[indexPath.row]
             playlist.deleteFiles()
-            objects.remove(at: indexPath.row)
+            DataStore.sharedStore.remove(playlist: playlist)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            DataStore.sharedStore.saveToDisk(playlists: objects)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }

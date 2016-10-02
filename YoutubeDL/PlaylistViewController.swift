@@ -37,11 +37,19 @@ class PlaylistViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showVideo" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                print("Showing video...")
                 let video = objects[indexPath.row]
 
                 let controller = segue.destination as! AVPlayerViewController
                 let player = AVPlayer(url: video.downloadLocation())
+                if video.watchedPosition > 0 {
+                    player.seek(to: CMTime(seconds: Double(video.watchedPosition), preferredTimescale: 1))
+                }
+                
+                player.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1.0, preferredTimescale: 1), queue: nil, using: { (time) in
+                    video.watchedPosition = Int(time.seconds)
+                    DataStore.sharedStore.saveToDisk()
+                })
+                
                 controller.player = player
                 player.play()
             }

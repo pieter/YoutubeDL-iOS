@@ -14,6 +14,7 @@ final class Video : NSObject, NSCoding {
     var progress: Float?
     var status: Status
     var duration = 0
+    var watchedPosition = 0
     
     enum Status {
         case Downloaded
@@ -32,12 +33,14 @@ final class Video : NSObject, NSCoding {
         let title = decoder.decodeObject(forKey: "title") as! String
         self.init(id: id, title: title)
         duration = decoder.decodeInteger(forKey: "duration")
+        watchedPosition = decoder.decodeInteger(forKey: "watchedPosition")
     }
 
     func encode(with coder: NSCoder) {
         coder.encode(title, forKey: "title")
         coder.encode(id, forKey: "id")
         coder.encode(duration, forKey: "duration")
+        coder.encode(watchedPosition, forKey: "watchedPosition")
     }
 
     func downloadLocation() -> URL {

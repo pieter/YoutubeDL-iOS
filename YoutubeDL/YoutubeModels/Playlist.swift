@@ -37,14 +37,18 @@ final class Playlist : NSObject, NSCoding {
         videos.append(video);
     }
     
+    func findVideo(id: String) -> Video? {
+        return videos.first { $0.id == id }
+    }
+    
     func updateFromJson(json: [String: AnyObject]) {
         title = json["title"]! as! String
         id = json["id"] as! String?
         
         let entries = json["entries"]! as! [[String: AnyObject]]
-        for entry in entries {
-            addVideo(video: Video.fromJson(json: entry))
-        }
+        let videos = entries.map { Video.fromJson(json: $0) }
+        // Keep old video if we already have it, since it include played state etc.
+        self.videos = videos.map { findVideo(id: $0.id) ?? $0 }
     }
         
     class func fromJson(json: [String: AnyObject]) -> Playlist {

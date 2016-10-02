@@ -39,10 +39,12 @@ class DownloadManager {
         queue.async {
             playlist.state = .Loading
             let data = YDL_playlistDataForUrl(playlist.url)
-            playlist.updateFromJson(json: data as! [String : AnyObject])
-            playlist.state = .Loaded
-            print("Refreshed playlist: \(playlist)")
-            DispatchQueue.main.async(execute: onDone)
+            DispatchQueue.main.async {
+                playlist.updateFromJson(json: data as! [String : AnyObject])
+                playlist.state = .Loaded
+                print("Refreshed playlist: \(playlist)")
+                onDone()
+            }
         }
     }
     

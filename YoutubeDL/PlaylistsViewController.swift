@@ -71,6 +71,7 @@ class PlaylistsViewController: UITableViewController {
                 let object = objects[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! PlaylistViewController
                 controller.objects = object.videos
+                controller.playlist = object
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }

@@ -13,6 +13,7 @@ import Dispatch
 
 class PlaylistViewController: UITableViewController {
 
+    var playlist: Playlist?
     var objects = [Video]()
 
     override func viewDidLoad() {
@@ -32,6 +33,13 @@ class PlaylistViewController: UITableViewController {
         return objects.count
     }
     
+    @IBAction func refreshPlaylist(_ sender: UIRefreshControl) {
+        DownloadManager.sharedDownloadManager.refreshPlaylist(playlist: playlist!) {
+            [weak self] in
+            self?.tableView.reloadData()
+            sender.endRefreshing()
+        }
+    }
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

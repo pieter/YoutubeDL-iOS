@@ -45,9 +45,11 @@ class PlaylistViewController: UITableViewController {
                     player.seek(to: CMTime(seconds: Double(video.watchedPosition), preferredTimescale: 1))
                 }
                 
-                player.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1.0, preferredTimescale: 1), queue: nil, using: { (time) in
+                player.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1.0, preferredTimescale: 1), queue: nil, using: {
+                    [weak self] (time) in
                     video.watchedPosition = Int(time.seconds)
                     DataStore.sharedStore.saveToDisk()
+                    self?.tableView.reloadRows(at: [indexPath], with: .none)
                 })
                 
                 controller.player = player
@@ -63,11 +65,15 @@ class PlaylistViewController: UITableViewController {
         cell.textLabel!.text = video.title
 
         if video.hasBeenDownloaded() {
-            cell.detailTextLabel!.text = "\(video.time) Downloaded"
+            if (video.watchedPosition == 0) {
+                cell.detailTextLabel!.text = "\(video.time) - NEW"
+            } else {
+                cell.detailTextLabel!.text = "\(video.time) - Watched up to \(video.watchedPosition / 60):\(video.watchedPosition % 60)"
+            }
         } else if video.status == .Downloading {
             cell.detailTextLabel!.text = "Downloading \(Int((video.progress ?? 0) * 100))%"
         } else {
-            cell.detailTextLabel!.text = "\(video.time) Download"
+            cell.detailTextLabel!.text = "\(video.time)"
         }
         
         return cell

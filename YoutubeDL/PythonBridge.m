@@ -44,8 +44,13 @@ PyMethodDef progressCallback = { "progressCallback", callback, METH_VARARGS, NUL
 static PyObject *module;
 
 void YDL_initialize() {
+    NSArray * bundles = [NSBundle allBundles];
+    for (NSBundle *bundle in bundles) {
+        NSLog(@"Found bundle: %@ %@", bundle, [bundle bundleIdentifier]);
+    }
+    
     NSString *path = [[NSBundle mainBundle] resourcePath];
-    NSString *pythonHome = [path stringByAppendingPathComponent:@"python27"];
+    NSString *pythonHome = [path stringByAppendingPathComponent:@"PythonHome"];
     
     Py_SetPythonHome((char *)[pythonHome UTF8String]);
     Py_Initialize();

@@ -22,7 +22,6 @@
 		775DD8871DA002EE009818F1 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD8861DA002EE009818F1 /* libsqlite3.tbd */; };
 		775DD8891DA00303009818F1 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD8881DA00303009818F1 /* libcompression.tbd */; };
 		775DD88B1DA00339009818F1 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD88A1DA00339009818F1 /* libz.tbd */; };
-		775DD88E1DA00434009818F1 /* python27 in Copy Python Home */ = {isa = PBXBuildFile; fileRef = 775DD88D1DA00434009818F1 /* python27 */; };
 		775DD89C1DA00CE8009818F1 /* pytest.py in Copy Python Code */ = {isa = PBXBuildFile; fileRef = 775DD8991DA00CDD009818F1 /* pytest.py */; };
 		775DD89D1DA00CE9009818F1 /* youtube_dl in Copy Python Code */ = {isa = PBXBuildFile; fileRef = 775DD89A1DA00CDD009818F1 /* youtube_dl */; };
 		775DD8A01DA01D44009818F1 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD89F1DA01D44009818F1 /* Playlist.swift */; };
@@ -50,21 +49,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		775DD88C1DA0041F009818F1 /* Copy Python Home */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-				775DD88E1DA00434009818F1 /* python27 in Copy Python Home */,
-			);
-			name = "Copy Python Home";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		775DD8911DA00735009818F1 /* Copy Python Code */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = python27/lib/python2.7;
+			dstPath = PythonHome/lib/python2.7;
 			dstSubfolderSpec = 7;
 			files = (
 				775DD89C1DA00CE8009818F1 /* pytest.py in Copy Python Code */,
@@ -99,7 +87,6 @@
 		775DD8861DA002EE009818F1 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		775DD8881DA00303009818F1 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		775DD88A1DA00339009818F1 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		775DD88D1DA00434009818F1 /* python27 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = python27; path = Frameworks/python27; sourceTree = "<group>"; };
 		775DD8991DA00CDD009818F1 /* pytest.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = pytest.py; path = Python/pytest.py; sourceTree = "<group>"; };
 		775DD89A1DA00CDD009818F1 /* youtube_dl */ = {isa = PBXFileReference; lastKnownFileType = folder; name = youtube_dl; path = Python/youtube_dl; sourceTree = "<group>"; };
 		775DD89F1DA01D44009818F1 /* Playlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
@@ -145,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				775DD8971DA00CD1009818F1 /* Python Code */,
-				775DD88D1DA00434009818F1 /* python27 */,
 				775DD8761D9FFEE1009818F1 /* BZip2.framework */,
 				775DD8771D9FFEE1009818F1 /* OpenSSL.framework */,
 				775DD8781D9FFEE1009818F1 /* Python.framework */,
@@ -250,7 +236,7 @@
 			buildConfigurationList = 770544751D9FFB8100A8EFF0 /* Build configuration list for PBXNativeTarget "YoutubeDL" */;
 			buildPhases = (
 				770544471D9FFB8000A8EFF0 /* Sources */,
-				775DD88C1DA0041F009818F1 /* Copy Python Home */,
+				775DD8B01DA1727F009818F1 /* ShellScript */,
 				775DD8911DA00735009818F1 /* Copy Python Code */,
 				770544491D9FFB8000A8EFF0 /* Resources */,
 				770544481D9FFB8000A8EFF0 /* Frameworks */,
@@ -374,6 +360,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		775DD8B01DA1727F009818F1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH\"\nrm -rf PythonHome\nmkdir PythonHome\ncd PythonHome\nmkdir -p lib/python2.7\ncd lib/python2.7\nunzip \"$SOURCE_ROOT\"/Frameworks/Python.framework/Versions/2.7/Resources/lib/python27.zip";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		770544471D9FFB8000A8EFF0 /* Sources */ = {

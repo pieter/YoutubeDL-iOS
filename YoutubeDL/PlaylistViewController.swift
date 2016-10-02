@@ -40,15 +40,37 @@ class PlaylistViewController: UITableViewController {
             sender.endRefreshing()
         }
     }
+
+    func playerUrl(video: Video) -> URL {
+        if video.hasBeenDownloaded() {
+            return video.downloadLocation()
+        }
+        let fileManager = FileManager.default
+        
+        // Assume we have partial, otherwise why would this have been called?
+        let partialLocation = video.partialDownloadLocation
+        let linkLocation = partialLocation.appendingPathExtension(".mp4")
+        if !fileManager.fileExists(atPath: linkLocation.path) {
+            do {
+                try fileManager.linkItem(at: partialLocation, to: linkLocation)
+            } catch _ {
+                // Whoops
+            }
+        }
+        return linkLocation
+        
+    }
     
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showVideo" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let video = objects[indexPath.row]
 
                 let controller = segue.destination as! AVPlayerViewController
-                let player = AVPlayer(url: video.downloadLocation())
+                
+                /// <#Description#>
+                let player = AVPlayer(url: playerUrl(video: video))
                 if video.watchedPosition > 0 {
                     player.seek(to: CMTime(seconds: Double(video.watchedPosition), preferredTimescale: 1))
                 }
@@ -89,7 +111,7 @@ class PlaylistViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let video = objects[indexPath.row]
-        if video.hasBeenDownloaded() {
+        if video.hasBeenDownloaded() || video.status == .Downloading {
             performSegue(withIdentifier: "showVideo", sender: self)
         } else {
             DownloadManager.sharedDownloadManager.downloadVideo(video: video) {_ in

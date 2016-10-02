@@ -52,6 +52,10 @@ final class Video : NSObject, NSCoding {
         return URL(string: "https://www.youtube.com/watch?v=\(id)")!
     }
     
+    var partialDownloadLocation: URL {
+        return downloadLocation().appendingPathExtension("part")
+    }
+    
     func deleteFile() {
         if hasBeenDownloaded() {
             do {
@@ -64,6 +68,10 @@ final class Video : NSObject, NSCoding {
     
     var time: String {
         return "\(duration / 60):\(duration % 60)"
+    }
+    
+    func hasPartial() -> Bool {
+        return FileManager.default.fileExists(atPath: partialDownloadLocation.path)
     }
     
     func hasBeenDownloaded() -> Bool {

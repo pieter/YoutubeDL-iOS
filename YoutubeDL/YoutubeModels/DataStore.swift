@@ -9,7 +9,6 @@
 import Foundation
 
 func prefPath() -> String {
-//    return "/tmp/prefs.plist"
     let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     return dir.appendingPathComponent("playlists.plist").path
 }
@@ -37,6 +36,7 @@ class DataStore {
     }
     
     func loadFromDisk() -> [Playlist] {
+        print("Loading preferences from \(prefPath())")
         if let playlists = NSKeyedUnarchiver.unarchiveObject(withFile: prefPath()) as? [Playlist] {
             return playlists
         } else {

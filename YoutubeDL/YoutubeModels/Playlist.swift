@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Playlist : CustomStringConvertible {
+final class Playlist : NSObject, NSCoding {
     
     var state = Status.Loaded
     var videos = [Video]()
@@ -26,6 +26,13 @@ class Playlist : CustomStringConvertible {
         self.url = url
     }
     
+    required convenience init(coder decoder: NSCoder) {
+        self.init(url: decoder.decodeObject(forKey: "url") as! URL)
+        title = decoder.decodeObject(forKey: "title") as! String
+        videos = decoder.decodeObject(forKey: "videos") as! [Video]
+        id = decoder.decodeObject(forKey: "id") as? String
+    }
+    
     func addVideo(video: Video) {
         videos.append(video);
     }
@@ -39,15 +46,24 @@ class Playlist : CustomStringConvertible {
             addVideo(video: Video.fromJson(json: entry))
         }
     }
-    
-    var description: String {
-        return "Playlist(title: \(title) id: \(id) videos: \(videos))"
-    }
-    
+        
     class func fromJson(json: [String: AnyObject]) -> Playlist {
         let playlist = Playlist(url: URL(string: json["webpage_url"]! as! String)!)
         playlist.updateFromJson(json: json)
         
         return playlist
+    }
+    
+    func deleteFiles() {
+        videos.forEach { (video) in
+            video.deleteFile()
+        }
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(title, forKey: "title")
+        coder.encode(id, forKey: "id")
+        coder.encode(url, forKey: "url")
+        coder.encode(videos, forKey: "videos")
     }
 }

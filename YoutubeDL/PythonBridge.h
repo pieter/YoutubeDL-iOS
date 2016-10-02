@@ -7,5 +7,9 @@
 // Call before calling any of the functions below
 void YDL_initialize();
 
+typedef void (^YDL_progressUpdate)(NSDictionary *updateData);
+
+void YDL_setProgressCallback(YDL_progressUpdate callback);
+
 NSDictionary *YDL_playlistDataForUrl(NSURL *url);
-NSURL *YDL_downloadVideo(NSString *url);
+void YDL_downloadVideo(NSURL *url, NSURL *filePath);

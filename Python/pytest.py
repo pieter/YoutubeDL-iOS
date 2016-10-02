@@ -15,22 +15,22 @@ def get_info(url):
         print(traceback.format_exc())
         raise
 
-def download(url, progress_cb):
+def download(url, output_file, progress_cb):
     def progress_hook(event):
-        print("Progress hook called!")
         progress_cb(json.dumps(event, sort_keys=True, indent=4))
 
-    print "Going to download %s!", url
-    ytb = youtube_dl.YoutubeDL({
-        "nocheckcertificate": True,
-        "progress_hooks": [progress_hook],
-        "restrictfilenames": True,
-        "nooverwrites": True,
-        "outtmpl": "/tmp/video/%(id)s.%(ext)s"
-    })
-
     try:
-        ytb.download([url])
+        print "Going to download %s to %s" % (url, output_file)
+        ytb = youtube_dl.YoutubeDL({
+                               "nocheckcertificate": True,
+                               "progress_hooks": [progress_hook],
+                               "restrictfilenames": True,
+                               "nooverwrites": True,
+                               "format": "best[ext=mp4]",
+                               "outtmpl": unicode(output_file)
+                               })
+
+        ytb.download([unicode(url)])
     except Exception:
         print "Error downloading file:"
         print(traceback.format_exc())

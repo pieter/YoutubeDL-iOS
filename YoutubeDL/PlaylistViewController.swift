@@ -35,31 +35,46 @@ class PlaylistViewController: UITableViewController {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("ID: \(segue.identifier)");
         if segue.identifier == "showVideo" {
-            print("Showing video...")
-            let controller = segue.destination as! AVPlayerViewController
-            let url = Bundle.main.url(forResource:"sample", withExtension:"mp4")!
-            let player = AVPlayer(url: url)
-            controller.player = player
-            player.play()
-            
-//            if let indexPath = self.tableView.indexPathForSelectedRow {
-//                let object = objects[indexPath.row]
-//                let controller = (segue.destination as! UINavigationController).topViewController as! PlaylistViewController
-//                controller.objects = object.videos
-//                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
-//                controller.navigationItem.leftItemsSupplementBackButton = true
-//            }
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                print("Showing video...")
+                let video = objects[indexPath.row]
+
+                let controller = segue.destination as! AVPlayerViewController
+                let player = AVPlayer(url: video.downloadLocation())
+                controller.player = player
+                player.play()
+            }
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        let object = objects[indexPath.row]
-        cell.textLabel!.text = object.title
+        let video = objects[indexPath.row]
+        cell.textLabel!.text = video.title
+
+        if video.hasBeenDownloaded() {
+            cell.detailTextLabel!.text = "\(video.time) Downloaded"
+        } else if video.status == .Downloading {
+            cell.detailTextLabel!.text = "Downloading \(Int((video.progress ?? 0) * 100))%"
+        } else {
+            cell.detailTextLabel!.text = "\(video.time) Download"
+        }
+        
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let video = objects[indexPath.row]
+        if video.hasBeenDownloaded() {
+            performSegue(withIdentifier: "showVideo", sender: self)
+        } else {
+            DownloadManager.sharedDownloadManager.downloadVideo(video: video) {_ in
+                self.tableView.reloadData()
+            }
+            self.tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -69,8 +84,8 @@ class PlaylistViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            objects.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            objects[indexPath.row].deleteFile()
+            tableView.reloadData()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }

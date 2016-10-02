@@ -3,7 +3,7 @@ import UIKit
 class PlaylistsViewController: UITableViewController {
 
     var detailViewController: PlaylistViewController? = nil
-    var objects = [Playlist]()
+    var objects = DataStore.sharedStore.loadFromDisk()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,14 +32,20 @@ class PlaylistsViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func update() {
+        tableView.reloadData()
+        DataStore.sharedStore.saveToDisk(playlists: objects)
+    }
+    
     func addListFromString(stringUrl: String) {
         let playlist = Playlist(url: URL(string: stringUrl)!)
-        self.objects.append(playlist)
+        objects.append(playlist)
         
         DownloadManager.sharedDownloadManager.refreshPlaylist(playlist: playlist) {
-            self.tableView.reloadData()
+            print("Updated playlist: \(playlist)")
+            self.update()
         }
-        self.tableView.reloadData()
+        update()
     }
     
     func insertNewObject(_ sender: Any) {
@@ -83,8 +89,15 @@ class PlaylistsViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let playlist = objects[indexPath.row]
-        cell.textLabel!.text = playlist.title
-        cell.detailTextLabel!.text = "\(playlist.videos.count) videos"
+        
+        if (playlist.state == .Loading) {
+            cell.textLabel!.text = "New Playlist"
+            cell.detailTextLabel!.text = "Loading..."
+        } else {
+            cell.textLabel!.text = playlist.title
+            cell.detailTextLabel!.text = "\(playlist.videos.count) videos"
+        }
+        
         return cell
     }
 
@@ -95,8 +108,11 @@ class PlaylistsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            let playlist = objects[indexPath.row]
+            playlist.deleteFiles()
             objects.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            DataStore.sharedStore.saveToDisk(playlists: objects)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }

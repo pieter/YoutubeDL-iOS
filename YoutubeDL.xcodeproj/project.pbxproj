@@ -29,6 +29,8 @@
 		775DD8A41DA0299A009818F1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD8A31DA0299A009818F1 /* AVKit.framework */; };
 		775DD8A61DA02C61009818F1 /* sample.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 775DD8A51DA02C53009818F1 /* sample.mp4 */; };
 		775DD8A91DA04893009818F1 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD8A81DA04893009818F1 /* DownloadManager.swift */; };
+		775DD8AB1DA05A89009818F1 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD8AA1DA05A89009818F1 /* DataStore.swift */; };
+		775DD8AD1DA06AAE009818F1 /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD8AC1DA06AAE009818F1 /* DownloadProgress.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +96,8 @@
 		775DD8A31DA0299A009818F1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		775DD8A51DA02C53009818F1 /* sample.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.mp4; sourceTree = "<group>"; };
 		775DD8A81DA04893009818F1 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
+		775DD8AA1DA05A89009818F1 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		775DD8AC1DA06AAE009818F1 /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +218,8 @@
 			children = (
 				775DD89F1DA01D44009818F1 /* Playlist.swift */,
 				775DD8A11DA02093009818F1 /* Video.swift */,
+				775DD8AA1DA05A89009818F1 /* DataStore.swift */,
+				775DD8AC1DA06AAE009818F1 /* DownloadProgress.swift */,
 			);
 			path = YoutubeModels;
 			sourceTree = "<group>";
@@ -383,12 +389,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				775DD8851DA0019B009818F1 /* PythonBridge.m in Sources */,
+				775DD8AB1DA05A89009818F1 /* DataStore.swift in Sources */,
 				775DD8A21DA02093009818F1 /* Video.swift in Sources */,
 				770544531D9FFB8100A8EFF0 /* PlaylistViewController.swift in Sources */,
 				770544511D9FFB8100A8EFF0 /* PlaylistsViewController.swift in Sources */,
 				7705444F1D9FFB8100A8EFF0 /* AppDelegate.swift in Sources */,
 				775DD8A01DA01D44009818F1 /* Playlist.swift in Sources */,
 				775DD8A91DA04893009818F1 /* DownloadManager.swift in Sources */,
+				775DD8AD1DA06AAE009818F1 /* DownloadProgress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

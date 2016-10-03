@@ -10,6 +10,7 @@ import UIKit
 import AVKit
 import AVFoundation
 import Dispatch
+import WebImage
 
 class PlaylistViewController: UITableViewController {
 
@@ -91,24 +92,10 @@ class PlaylistViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! VideoViewCell
         
         let video = objects[indexPath.row]
-        cell.textLabel!.text = video.title
-
-        if video.hasBeenDownloaded() {
-            if (video.watchedPosition == 0) {
-                cell.detailTextLabel!.text = "\(video.time) - NEW"
-            } else {
-                cell.detailTextLabel!.text = "\(video.time) - Watched up to \(video.watchedPosition / 60):\(video.watchedPosition % 60)"
-            }
-        } else if video.status == .Downloading {
-            cell.detailTextLabel!.text = "Downloading \(Int((video.progress ?? 0) * 100))%"
-        } else if video.hasPartial() {
-            cell.detailTextLabel!.text = "\(video.time) -- Partially Downloaded. Tap to resume."
-        } else {
-            cell.detailTextLabel!.text = "\(video.time)"
-        }
+        cell.updateFrom(video: video)
         
         return cell
     }

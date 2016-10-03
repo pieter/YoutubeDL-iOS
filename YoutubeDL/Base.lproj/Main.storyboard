@@ -3,6 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -106,35 +108,53 @@
         <scene sceneID="Slh-Y5-a4E">
             <objects>
                 <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="tMp-c5-PmB" userLabel="Playlist" customClass="PlaylistViewController" customModule="YoutubeDL" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="t3R-1j-YSG">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" id="t3R-1j-YSG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="lYg-YH-oDw" detailTextLabel="xep-wd-f33" style="IBUITableViewCellStyleSubtitle" id="P7G-C6-aGo">
-                                <rect key="frame" x="0.0" y="86" width="375" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="P7G-C6-aGo" customClass="VideoViewCell" customModule="YoutubeDL" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="86" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="P7G-C6-aGo" id="BwZ-Ij-Bjq">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="79"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lYg-YH-oDw">
-                                            <frame key="frameInset" minX="15" minY="4" width="34" height="21"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HXr-wb-El0">
+                                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="HXr-wb-El0" secondAttribute="height" multiplier="16:9" id="PqB-aD-qmM"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzu-Fu-9AX">
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xep-wd-f33">
-                                            <frame key="frameInset" minX="15" minY="25" width="44" height="15"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jHy-K7-ODB">
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="HXr-wb-El0" firstAttribute="top" secondItem="BwZ-Ij-Bjq" secondAttribute="top" constant="10" id="4RP-Gd-iLi"/>
+                                        <constraint firstAttribute="trailing" secondItem="jHy-K7-ODB" secondAttribute="trailing" constant="8" id="6KU-CL-d40"/>
+                                        <constraint firstItem="Vzu-Fu-9AX" firstAttribute="leading" secondItem="HXr-wb-El0" secondAttribute="trailing" constant="8" symbolic="YES" id="6bQ-iG-b0H"/>
+                                        <constraint firstAttribute="bottom" secondItem="HXr-wb-El0" secondAttribute="bottom" constant="10" id="IOo-8D-1DZ"/>
+                                        <constraint firstItem="HXr-wb-El0" firstAttribute="leading" secondItem="BwZ-Ij-Bjq" secondAttribute="leadingMargin" id="Tsh-Kk-GVa"/>
+                                        <constraint firstItem="Vzu-Fu-9AX" firstAttribute="bottom" secondItem="jHy-K7-ODB" secondAttribute="top" id="biV-X4-4Ov"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Vzu-Fu-9AX" secondAttribute="trailing" id="cWw-XA-AnJ"/>
+                                        <constraint firstItem="jHy-K7-ODB" firstAttribute="leading" secondItem="HXr-wb-El0" secondAttribute="trailing" constant="8" symbolic="YES" id="tet-Vi-85o"/>
+                                        <constraint firstItem="Vzu-Fu-9AX" firstAttribute="top" secondItem="BwZ-Ij-Bjq" secondAttribute="top" constant="10" id="xon-Ob-L4c"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="detail" destination="jHy-K7-ODB" id="YF7-jk-9Dj"/>
+                                    <outlet property="thumbnail" destination="HXr-wb-El0" id="zPM-E6-Qcc"/>
+                                    <outlet property="title" destination="Vzu-Fu-9AX" id="qtJ-Q5-Yo7"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -157,7 +177,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T4i-ex-2KO" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="708" y="128"/>
+            <point key="canvasLocation" x="708" y="127.28635682158921"/>
         </scene>
         <!--AV Player View Controller-->
         <scene sceneID="uBA-nT-zaK">

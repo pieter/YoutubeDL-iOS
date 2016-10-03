@@ -24,7 +24,7 @@ class DownloadManager {
             YDL_setProgressCallback { data in
                 let update = DownloadProgress(dict: data!)
                 if let video = self.activeVideo {
-                    video.progress = update.progress;
+                    video.progress = update;
                 }
                 if let updateCb = self.updateCallback {
                     DispatchQueue.main.async {

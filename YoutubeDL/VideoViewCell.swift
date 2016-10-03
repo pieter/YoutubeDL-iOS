@@ -21,8 +21,9 @@ class VideoViewCell: UITableViewCell {
                 return "\(video.time) - Watched up to \(video.watchedPosition / 60):\(video.watchedPosition % 60)"
             }
         }
-        if video.status == .Downloading {
-            return "Downloading \(Int((video.progress ?? 0) * 100))%"
+        if video.status == .Downloading && video.progress != nil {
+            let progress = video.progress!
+            return "Downloading \(Int((progress.progress) * 100))% - \(Int(progress.speed / 1024))KB/s"
         }
         if video.hasPartial() {
             return "\(video.time) -- Partially Downloaded. Tap to resume."

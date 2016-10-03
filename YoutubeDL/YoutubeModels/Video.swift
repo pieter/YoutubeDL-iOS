@@ -11,7 +11,7 @@ import Foundation
 final class Video : NSObject, NSCoding {
     var id: String
     var title: String
-    var progress: Float?
+    var progress: DownloadProgress?
     var status: Status
     var duration = 0
     var watchedPosition = 0

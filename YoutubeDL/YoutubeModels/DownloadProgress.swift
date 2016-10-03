@@ -10,8 +10,9 @@ import Foundation
 
 class DownloadProgress : NSObject {
     var status: String
-    var downloadedBytes: Int
-    var totalBytes: Int
+    var downloadedBytes = 0
+    var totalBytes = 0
+    var speed = 0
     
     var progress: Float {
         return Float(downloadedBytes) / Float(totalBytes)
@@ -19,13 +20,12 @@ class DownloadProgress : NSObject {
     
     override init() {
         status = "Initializing"
-        downloadedBytes = 0
-        totalBytes = 0
     }
     
     init(dict: [AnyHashable: Any]) {
         status = dict["status"]! as! String
         downloadedBytes = Int(dict["downloaded_bytes"]! as! NSNumber)
+        speed = Int(dict["speed"] as? NSNumber ?? 0)
         totalBytes = Int(dict["total_bytes"]! as! NSNumber)
     }
 }

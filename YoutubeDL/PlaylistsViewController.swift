@@ -94,8 +94,8 @@ class PlaylistsViewController: UITableViewController {
         let playlist = objects[indexPath.row]
         
         if (playlist.state == .Loading) {
-            cell.textLabel!.text = "New Playlist"
-            cell.detailTextLabel!.text = "Loading..."
+            cell.textLabel!.text = playlist.title ?? "New Playlist"
+            cell.detailTextLabel!.text = "Loading... (\(playlist.videos.count)+ videos)"
         } else {
             cell.textLabel!.text = playlist.title
             cell.detailTextLabel!.text = "\(playlist.videos.count) videos"

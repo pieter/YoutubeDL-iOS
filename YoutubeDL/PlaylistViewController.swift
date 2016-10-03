@@ -18,6 +18,7 @@ class PlaylistViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         print("Loaded Subcontroller...")
         // Do any additional setup after loading the view, typically from a nib.
         // self.configureView()

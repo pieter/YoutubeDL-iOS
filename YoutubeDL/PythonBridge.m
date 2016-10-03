@@ -62,6 +62,24 @@ void YDL_setProgressCallback(YDL_progressUpdate callback) {
     progressUpdate = callback;
 }
 
+
+static PyObject *playlistCallback(PyObject *o, PyObject *args) {
+    PyObject *capsule;
+    char *strData;
+    PyArg_ParseTuple(args, "Os", &capsule, &strData);
+    void *cbPtr = PyCapsule_GetPointer(capsule, NULL);
+    
+    NSDictionary *data = parseJSON(strData);
+    YDL_progressUpdate updater = (__bridge YDL_progressUpdate)cbPtr;
+    updater(data);
+    
+    Py_RETURN_NONE;
+}
+
+PyMethodDef playlistCallbackDef = { "playlistCallback", playlistCallback, METH_VARARGS, NULL };
+
+
+
 void YDL_initialize() {
     NSArray * bundles = [NSBundle allBundles];
     for (NSBundle *bundle in bundles) {
@@ -78,11 +96,13 @@ void YDL_initialize() {
     NSLog(@"Python initialized");
 }
 
-NSDictionary *YDL_playlistDataForUrl(NSURL *url) {
-    PyObject *function = getModuleFn("pytest", "get_info");
-    PyObject *retVal = PyObject_CallFunction(function, "s", [[url absoluteString] UTF8String]);
-    char *json = PyString_AsString(retVal);
-    return parseJSON(json);
+void YDL_playlistDataForUrl(NSURL *url, YDL_progressUpdate callback) {
+    PyObject *function = getModuleFn("pytest", "load_playlist");
+    
+    PyObject *context = PyCapsule_New((__bridge void*)callback, NULL, NULL);
+    PyObject *progress = PyCFunction_New(&playlistCallbackDef, NULL);
+    
+    PyObject_CallFunction(function, "sOO", [[url absoluteString] UTF8String], progress, context);
 }
 
 void YDL_downloadVideo(NSURL *url, NSURL *filePath) {

@@ -13,7 +13,7 @@ final class Playlist : NSObject, NSCoding {
     var state = Status.Loaded
     var videos = [Video]()
 
-    var title = "Loading"
+    var title: String?
     var id: String?
     var url: URL
     
@@ -28,13 +28,15 @@ final class Playlist : NSObject, NSCoding {
     
     required convenience init(coder decoder: NSCoder) {
         self.init(url: decoder.decodeObject(forKey: "url") as! URL)
-        title = decoder.decodeObject(forKey: "title") as! String
+        title = decoder.decodeObject(forKey: "title") as? String
         videos = decoder.decodeObject(forKey: "videos") as! [Video]
         id = decoder.decodeObject(forKey: "id") as? String
     }
     
     func addVideo(video: Video) {
-        videos.append(video);
+        if findVideo(id: video.id) == nil {
+            videos.append(video);
+        }
     }
     
     func findVideo(id: String) -> Video? {
@@ -42,7 +44,7 @@ final class Playlist : NSObject, NSCoding {
     }
     
     func updateFromJson(json: [String: AnyObject]) {
-        title = json["title"]! as! String
+        title = json["title"] as? String
         id = json["id"] as! String?
         
         let entries = json["entries"]! as! [[String: AnyObject]]

@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import youtube_dl
+from youtube_dl.extractor import youtube
 import json
 import traceback
 
@@ -35,3 +36,28 @@ def download(url, output_file, progress_cb):
         print "Error downloading file:"
         print(traceback.format_exc())
         raise
+
+def load_playlist(url, update_cb, context=None):
+    try:
+        print 
+        ytb = youtube_dl.YoutubeDL({"nocheckcertificate": True})
+        extractor = youtube.YoutubePlaylistIE()
+        extractor.set_downloader(ytb)
+        data = extractor.extract(url)
+        entries = data.pop("entries")
+
+        update_cb(context, json.dumps({
+            'type': 'initial',
+            'data': data
+        }))
+    
+        for entry in entries:
+            update_cb(context, json.dumps({
+                "type": "entry",
+                "data": entry
+            }))
+    except Exception:
+        print "Error Loading Playlist:"
+        print(traceback.format_exc())
+        raise
+    

@@ -35,16 +35,30 @@ class DownloadManager {
         }
     }
     
-    func refreshPlaylist(playlist: Playlist, onDone: @escaping () -> ()) {
+    func refreshPlaylist(playlist: Playlist, onUpdate: @escaping () -> ()) {
         queue.async {
             playlist.state = .Loading
-            let data = YDL_playlistDataForUrl(playlist.url)
+            YDL_playlistDataForUrl(playlist.url, { (data) in
+                print("Have playlist data: \(data)")
+                let type = data!["type"]! as! String
+                let attrs = data!["data"]! as! [String: String]
+                
+                if type == "initial" {
+                    playlist.id = attrs["id"]
+                    playlist.title = attrs["title"]!
+                    DispatchQueue.main.async(execute: onUpdate)
+                    print("Updated playlist attrs \(playlist.id) \(playlist.title)")
+                } else if type == "entry" {
+                    let video = Video(id: attrs["id"]!, title: attrs["title"]!)
+                    playlist.addVideo(video: video)
+                    DispatchQueue.main.async(execute: onUpdate)
+                }
+            })
             DispatchQueue.main.async {
-                playlist.updateFromJson(json: data as! [String : AnyObject])
                 playlist.state = .Loaded
-                print("Refreshed playlist: \(playlist)")
-                onDone()
+                onUpdate()
             }
+
         }
     }
     

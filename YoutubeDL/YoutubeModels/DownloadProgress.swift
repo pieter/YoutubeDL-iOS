@@ -9,21 +9,27 @@
 import Foundation
 
 class DownloadProgress : NSObject {
-    var status: String
     var downloadedBytes = 0
     var totalBytes = 0
     var speed = 0
+    var status = Status.Queued
+    
+    enum Status {
+        case Queued
+        case Preparing
+        case Downloading
+    }
     
     var progress: Float {
         return Float(downloadedBytes) / Float(totalBytes)
     }
     
-    override init() {
-        status = "Initializing"
+    init(status: Status) {
+        self.status = status
     }
     
     init(dict: [AnyHashable: Any]) {
-        status = dict["status"]! as! String
+        status = .Downloading
         downloadedBytes = Int(dict["downloaded_bytes"]! as! NSNumber)
         speed = Int(dict["speed"] as? NSNumber ?? 0)
         totalBytes = Int(dict["total_bytes"]! as! NSNumber)

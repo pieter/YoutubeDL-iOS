@@ -102,13 +102,15 @@ class PlaylistViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let video = objects[indexPath.row]
-        if video.hasBeenDownloaded() || video.status == .Downloading {
+        if video.hasBeenDownloaded() || video.progress?.status == .Downloading {
             performSegue(withIdentifier: "showVideo", sender: self)
         } else {
+            self.tableView.beginUpdates()
             DownloadManager.sharedDownloadManager.downloadVideo(video: video) {_ in
                 self.tableView.reloadData()
             }
             self.tableView.deselectRow(at: indexPath, animated: true)
+            self.tableView.endUpdates()
         }
     }
     

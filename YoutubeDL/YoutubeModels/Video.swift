@@ -12,18 +12,10 @@ final class Video : NSObject, NSCoding {
     var id: String
     var title: String
     var progress: DownloadProgress?
-    var status: Status
     var duration = 0
     var watchedPosition = 0
     
-    enum Status {
-        case Downloaded
-        case Downloading
-        case New
-    }
-    
     init(id: String, title: String) {
-        self.status = .New
         self.id = id
         self.title = title
     }

@@ -63,15 +63,15 @@ class DownloadManager {
     }
     
     func downloadVideo(video: Video, onUpdate: @escaping (DownloadProgress) -> ()) {
+        video.progress = DownloadProgress(status: .Queued)
         queue.async {
             print("Strating download for \(video.id)")
             self.activeVideo = video
             self.updateCallback = onUpdate
-            video.status = .Downloading
-            DispatchQueue.main.async { onUpdate(DownloadProgress()) }
+            video.progress = DownloadProgress(status: .Preparing)
+            DispatchQueue.main.async { onUpdate(video.progress!) }
             YDL_downloadVideo(video.url, video.downloadLocation())
             video.progress = nil
-            video.status = .Downloaded
             self.activeVideo = nil
             self.updateCallback = nil
             print("Done with download for \(video.id)")

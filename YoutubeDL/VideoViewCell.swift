@@ -42,7 +42,7 @@ class VideoViewCell: UITableViewCell {
     func updateFrom(video: Video) {
         title.text = video.title
         detail.text = detailText(video: video)
-        thumbnail.sd_setImage(with: URL(string: "https://i.ytimg.com/vi/\(video.id)/hqdefault.jpg")!)
+        thumbnail.sd_setImage(with: URL(string: "https://i.ytimg.com/vi/\(video.id)/maxresdefault.jpg")!)
         thumbnail.alpha = video.hasBeenDownloaded() ? 1 : 0.2
     }
 }

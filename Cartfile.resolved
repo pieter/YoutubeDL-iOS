@@ -1,1 +1,2 @@
 github "rs/SDWebImage" "3.8.2"
+github "rg3/youtube-dl" "2016.10.07"

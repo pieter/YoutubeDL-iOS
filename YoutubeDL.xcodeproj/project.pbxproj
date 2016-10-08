@@ -23,7 +23,6 @@
 		775DD8891DA00303009818F1 /* libcompression.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD8881DA00303009818F1 /* libcompression.tbd */; };
 		775DD88B1DA00339009818F1 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD88A1DA00339009818F1 /* libz.tbd */; };
 		775DD89C1DA00CE8009818F1 /* pytest.py in Copy Python Code */ = {isa = PBXBuildFile; fileRef = 775DD8991DA00CDD009818F1 /* pytest.py */; };
-		775DD89D1DA00CE9009818F1 /* youtube_dl in Copy Python Code */ = {isa = PBXBuildFile; fileRef = 775DD89A1DA00CDD009818F1 /* youtube_dl */; };
 		775DD8A01DA01D44009818F1 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD89F1DA01D44009818F1 /* Playlist.swift */; };
 		775DD8A21DA02093009818F1 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD8A11DA02093009818F1 /* Video.swift */; };
 		775DD8A41DA0299A009818F1 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775DD8A31DA0299A009818F1 /* AVKit.framework */; };
@@ -38,6 +37,7 @@
 		775DD8B61DA18269009818F1 /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775DD8AC1DA06AAE009818F1 /* DownloadProgress.swift */; };
 		77ABF8B11DA290C50004858E /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77ABF8B01DA290C50004858E /* WebImage.framework */; };
 		77ABF8B41DA2967C0004858E /* VideoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABF8B31DA2967C0004858E /* VideoViewCell.swift */; };
+		77ABF8B61DA937B00004858E /* youtube_dl in Copy Python Code */ = {isa = PBXBuildFile; fileRef = 77ABF8B51DA937B00004858E /* youtube_dl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +65,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				775DD89C1DA00CE8009818F1 /* pytest.py in Copy Python Code */,
-				775DD89D1DA00CE9009818F1 /* youtube_dl in Copy Python Code */,
+				77ABF8B61DA937B00004858E /* youtube_dl in Copy Python Code */,
 			);
 			name = "Copy Python Code";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,7 +97,6 @@
 		775DD8881DA00303009818F1 /* libcompression.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcompression.tbd; path = usr/lib/libcompression.tbd; sourceTree = SDKROOT; };
 		775DD88A1DA00339009818F1 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		775DD8991DA00CDD009818F1 /* pytest.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; name = pytest.py; path = Python/pytest.py; sourceTree = "<group>"; };
-		775DD89A1DA00CDD009818F1 /* youtube_dl */ = {isa = PBXFileReference; lastKnownFileType = folder; name = youtube_dl; path = Python/youtube_dl; sourceTree = "<group>"; };
 		775DD89F1DA01D44009818F1 /* Playlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		775DD8A11DA02093009818F1 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		775DD8A31DA0299A009818F1 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -108,6 +107,7 @@
 		775DD8B11DA18215009818F1 /* PlaylistTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistTests.swift; sourceTree = "<group>"; };
 		77ABF8B01DA290C50004858E /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = Carthage/Build/iOS/WebImage.framework; sourceTree = "<group>"; };
 		77ABF8B31DA2967C0004858E /* VideoViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewCell.swift; sourceTree = "<group>"; };
+		77ABF8B51DA937B00004858E /* youtube_dl */ = {isa = PBXFileReference; lastKnownFileType = folder; name = youtube_dl; path = "Carthage/Checkouts/youtube-dl/youtube_dl"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +146,7 @@
 		770544421D9FFB8000A8EFF0 = {
 			isa = PBXGroup;
 			children = (
+				77ABF8B51DA937B00004858E /* youtube_dl */,
 				775DD8971DA00CD1009818F1 /* Python Code */,
 				775DD8761D9FFEE1009818F1 /* BZip2.framework */,
 				775DD8771D9FFEE1009818F1 /* OpenSSL.framework */,
@@ -222,7 +223,6 @@
 			isa = PBXGroup;
 			children = (
 				775DD8991DA00CDD009818F1 /* pytest.py */,
-				775DD89A1DA00CDD009818F1 /* youtube_dl */,
 			);
 			name = "Python Code";
 			sourceTree = "<group>";

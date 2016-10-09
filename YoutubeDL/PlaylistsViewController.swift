@@ -68,10 +68,9 @@ class PlaylistsViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row]
+                let playlist = objects[indexPath.row]
                 let controller = (segue.destination as! UINavigationController).topViewController as! PlaylistViewController
-                controller.objects = object.videos
-                controller.playlist = object
+                controller.playlist = playlist
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }

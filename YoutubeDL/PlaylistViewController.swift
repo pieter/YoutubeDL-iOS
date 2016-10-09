@@ -15,7 +15,6 @@ import WebImage
 class PlaylistViewController: UITableViewController {
 
     var playlist: Playlist?
-    var objects = [Video]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +31,7 @@ class PlaylistViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return objects.count
+        return playlist?.videos.count ?? 0;
     }
     
     @IBAction func refreshPlaylist(_ sender: UIRefreshControl) {
@@ -68,7 +67,9 @@ class PlaylistViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showVideo" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let video = objects[indexPath.row]
+                guard let video = playlist?.videos[indexPath.row] else {
+                    return;
+                }
 
                 let controller = segue.destination as! AVPlayerViewController
                 
@@ -94,14 +95,14 @@ class PlaylistViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! VideoViewCell
         
-        let video = objects[indexPath.row]
+        let video = playlist!.videos[indexPath.row]
         cell.updateFrom(video: video)
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let video = objects[indexPath.row]
+        let video = playlist!.videos[indexPath.row]
         if video.hasBeenDownloaded() || video.progress?.status == .Downloading {
             performSegue(withIdentifier: "showVideo", sender: self)
         } else {
@@ -121,7 +122,7 @@ class PlaylistViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            objects[indexPath.row].deleteFile()
+            playlist?.videos[indexPath.row].deleteFile()
             tableView.reloadData()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
